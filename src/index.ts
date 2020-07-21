@@ -1,77 +1,78 @@
 import { Pool, Client } from "pg";
 import { IwhereInput } from "./interfaces";
+import { SelectService } from "./select_service";
+import { IselectServiceInput } from "./abstracts/select_service_interface";
 
 //Type of Database Instance
 type dbInstance = Pool | Client;
 
-abstract class IDeclarativePostgres {
-  //SELECT query
-  abstract select(table: string): void;
-
-  //select distinct
-  abstract selectDistinct(table: string): void;
-
-  //WHere COndition
-  abstract where({ column, operator, value }: IwhereInput): void;
-
-  //Sort
-  abstract sort({ sortBy }: { sortBy: string }): void;
-
-  //Execute The query
-  abstract execute(): void;
-}
-
-class DeclarativePostgres implements IDeclarativePostgres {
+class DeclarativePostgres {
   //Instance of Postgres Database
-
   private db: dbInstance;
+
+  //final Query to be executed
   private finalQuery: string;
 
+  //select instance
+  private selectInstance: SelectService | null = null;
+
+  //Temporary Constructor
+  constructor() {
+    //creating empty string
+    this.finalQuery = "";
+
+    //new client
+    this.db = new Client();
+  }
+
+  //Actual constructor to be used in production
   //   constructor({ databaseInstance }: { databaseInstance: dbInstance }) {
   //   Assigning Instance of postgres Db
   //   this.db = databaseInstance;
   //   }
 
-  constructor() {
-    this.finalQuery = "";
-    this.db = new Client();
-  }
-  selectDistinct(table: string): void {
-    throw new Error("Method not implemented.");
-  }
-  sort({ sortBy }: { sortBy: string }): void {
-    throw new Error("Method not implemented.");
-  }
-
   /**
+   * SELECT * FROM given table name
    *
-   * @param table
-   *
+   * @param query
    */
+  select({ table, distinct = false }: IselectServiceInput) {
+    //creating a new instance of SelectService
+    this.selectInstance = new SelectService(table, distinct);
 
-  select(table: string) {
-    this.finalQuery = `SELECT * FROM  ${table} `;
-    return this;
+    //return the select instance
+    return this.selectInstance;
   }
 
-  where({ column, operator, value }: IwhereInput) {
-    this.finalQuery = this.finalQuery + `WHERE ${column} ${operator} ${value} `;
-  }
-
+  //Declarative Postgres Logger
   log(): void {
     console.log(this.finalQuery);
   }
 
+  //Executing the final query
   async execute() {
-    return await this.db.query(this.finalQuery);
+    //Null checker for select instance
+    if (this.selectInstance) {
+      //assigning final query to select instance query
+      this.finalQuery = this.selectInstance.query;
+    }
+
+    //Executing the query
+    const result = await this.db.query(this.finalQuery);
+
+    //returning actual response
+    return result;
   }
 }
 
-const db = new DeclarativePostgres();
+//createing a instace of declarative postgres
+const postInstance = new DeclarativePostgres();
 
-db.select("users").where({ column: "Hrushi", operator: "==", value: "jas" });
+//Select query from declarative postgres
+postInstance.select({ table: "postgres", distinct: true }).log();
 
-// db.where({ column: "Hrushi", operator: "==", value: "jas" });
-// db.execute();
+//executing query
+postInstance.execute();
 
-db.log();
+//declarative postgres logger
+postInstance.log();

@@ -1,7 +1,7 @@
 import { Pool, Client } from "pg";
 import { IwhereInput } from "./interfaces";
 import { SelectService } from "./select_service";
-import { IselectServiceInput } from "./abstracts/select_service_interface";
+import { ISelectServiceInput } from "./abstracts/select_service_interface";
 
 //Type of Database Instance
 type dbInstance = Pool | Client;
@@ -36,7 +36,7 @@ class DeclarativePostgres {
    *
    * @param query
    */
-  select({ table, distinct = false }: IselectServiceInput) {
+  select({ table, distinct = false }: ISelectServiceInput) {
     //creating a new instance of SelectService
     this.selectInstance = new SelectService(table, distinct);
 

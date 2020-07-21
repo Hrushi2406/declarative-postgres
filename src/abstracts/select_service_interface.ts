@@ -13,7 +13,7 @@ export interface ISelectService {
 }
 
 //Input Interfaces
-export interface IselectServiceInput {
+export interface ISelectServiceInput {
   table: string;
   distinct?: boolean;
 }

@@ -4,7 +4,7 @@
   "description": "This package gives a way to declaratively query data from your postgres db",
   "main": "index.js",
   "scripts": {
-    "test": "nodemon index.ts"
+    "test": "nodemon src/index.ts"
   },
   "repository": {
     "type": "git",
@@ -20,5 +20,13 @@
   "bugs": {
     "url": "https://github.com/Hrushi2406/declarative-postgres/issues"
   },
-  "homepage": "https://github.com/Hrushi2406/declarative-postgres#readme"
+  "homepage": "https://github.com/Hrushi2406/declarative-postgres#readme",
+  "dependencies": {
+    "pg": "^8.3.0"
+  },
+  "devDependencies": {
+    "@types/pg": "^7.14.4",
+    "ts-node": "^8.10.2",
+    "typescript": "^3.9.7"
+  }
 }

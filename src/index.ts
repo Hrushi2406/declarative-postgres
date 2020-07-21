@@ -1,7 +1,9 @@
 import { Pool, Client } from "pg";
 import { IwhereInput } from "./interfaces";
 import { SelectService } from "./select_service";
+import { DeleteService } from "./delete_service";
 import { ISelectServiceInput } from "./abstracts/select_service_interface";
+import { IDeleteServiceInput } from "./abstracts/delete_service_interface";
 
 //Type of Database Instance
 type dbInstance = Pool | Client;
@@ -15,6 +17,9 @@ class DeclarativePostgres {
 
   //select instance
   private selectInstance: SelectService | null = null;
+
+  //delete instance
+  private deleteInstance: DeleteService | null = null;
 
   //Temporary Constructor
   constructor() {
@@ -44,6 +49,14 @@ class DeclarativePostgres {
     return this.selectInstance;
   }
 
+  delete({ table }: IDeleteServiceInput) {
+    //creating a new instance of DeleteService
+    this.deleteInstance = new DeleteService(table);
+
+    //return the delete instance
+    return this.deleteInstance;
+  }
+
   //Declarative Postgres Logger
   log(): void {
     console.log(this.finalQuery);
@@ -55,6 +68,13 @@ class DeclarativePostgres {
     if (this.selectInstance) {
       //assigning final query to select instance query
       this.finalQuery = this.selectInstance.query;
+      this.selectInstance = null;
+    }
+
+    if (this.deleteInstance) {
+      //assigning final query to delete instance query
+      this.finalQuery = this.deleteInstance.query;
+      this.deleteInstance = null;
     }
 
     //Executing the query
@@ -71,8 +91,14 @@ const postInstance = new DeclarativePostgres();
 //Select query from declarative postgres
 postInstance.select({ table: "postgres", distinct: true }).log();
 
-//executing query
-postInstance.execute();
+// //executing query
+// postInstance.execute();
+
+//Delete query from declarative postgres
+postInstance.delete({ table: "postgres"}).log();
+
+// //executing query
+// postInstance.execute();
 
 //declarative postgres logger
 postInstance.log();

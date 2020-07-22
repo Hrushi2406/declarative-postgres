@@ -6,10 +6,12 @@ export class SelectService implements ISelectService {
   private query: string;
 
   //constructor for base select query
-  constructor(table: string, distinct: boolean) {
+  constructor(table: string, distinct: boolean, onColumn?: string) {
     //check for distinct parameters
-    if (distinct) {
-      this.query = `SELECT DISTINCT * FROM ${table} `;
+    if (distinct && onColumn) {
+      this.query = `SELECT DISTINCT ON (${onColumn}) * FROM ${table} `;
+    } else if (distinct && !onColumn) {
+      throw new Error("If distinct is true than you should provide on column");
     } else {
       this.query = `SELECT * FROM ${table} `;
     }
@@ -25,6 +27,7 @@ export class SelectService implements ISelectService {
     return this;
   }
 
+  //and operators
   and() {
     //Building query
     this.query = this.query + `AND `;
@@ -32,8 +35,37 @@ export class SelectService implements ISelectService {
     return this;
   }
 
+  //or query
   or() {
     this.query = this.query + `OR `;
+
+    return this;
+  }
+
+  groupBy({ column }: { column: string }) {
+    this.query = this.query + `GROUP BY ${column} `;
+
+    return this;
+  }
+
+  having({
+    column,
+    operator,
+    value,
+    aggregatedFunction,
+  }: IWhereInputInterface) {
+    if (aggregatedFunction) {
+      this.query =
+        this.query +
+        `HAVING aggregatedFunction (${column}) ${operator} ${value} `;
+    } else {
+      this.query = this.query + `WHERE ${column}) ${operator} ${value} `;
+    }
+  }
+
+  // custom query
+  custom(query: string) {
+    this.query = query;
 
     return this;
   }

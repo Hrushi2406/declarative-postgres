@@ -40,9 +40,9 @@ class DeclarativePostgres {
    *
    * @param query
    */
-  select({ table, distinct = false }: ISelectServiceInput) {
+  select({ table, distinct = false, onColumn }: ISelectServiceInput) {
     //creating a new instance of SelectService
-    this.selectInstance = new SelectService(table, distinct);
+    this.selectInstance = new SelectService(table, distinct, onColumn);
 
     //return the select instance
     return this.selectInstance;
@@ -94,7 +94,7 @@ const postInstance = new DeclarativePostgres();
 
 //Select query from declarative postgres
 postInstance
-  .select({ table: "postgres", distinct: true })
+  .select({ table: "postgres", distinct: true, onColumn: "hrushi" })
   .where({
     column: "id",
     operator: ">",

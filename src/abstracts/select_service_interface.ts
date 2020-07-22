@@ -7,6 +7,9 @@ export interface ISelectService {
   //And
   and: () => void;
 
+  //custom query
+  custom: (query: string) => void;
+
   //In class executer
   execute: () => void;
 
@@ -18,4 +21,5 @@ export interface ISelectService {
 export interface ISelectServiceInput {
   table: string;
   distinct?: boolean;
+  onColumn?: string;
 }

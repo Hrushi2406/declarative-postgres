@@ -1,4 +1,4 @@
-import { ISelectService } from "./abstracts/select_service_interface";
+import { ISelectService } from "../abstracts/select_service_interface";
 
 export class SelectService implements ISelectService {
   //In class query builder

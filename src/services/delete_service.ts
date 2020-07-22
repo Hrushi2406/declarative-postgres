@@ -1,7 +1,7 @@
 import {
   IDeleteService,
   IDeleteServiceInput,
-} from "./abstracts/delete_service_interface";
+} from "../abstracts/delete_service_interface";
 
 export class DeleteService implements IDeleteService {
   //In class query builder

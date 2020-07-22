@@ -1,7 +1,6 @@
 import { Pool, Client } from "pg";
-import { IwhereInput } from "./interfaces";
-import { SelectService } from "./select_service";
-import { DeleteService } from "./delete_service";
+import { SelectService } from "./services/select_service";
+import { DeleteService } from "./services/delete_service";
 import { ISelectServiceInput } from "./abstracts/select_service_interface";
 import { IDeleteServiceInput } from "./abstracts/delete_service_interface";
 

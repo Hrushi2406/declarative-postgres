@@ -98,13 +98,13 @@ postInstance
   .where({
     column: "id",
     operator: ">",
-    value: " hrushi",
+    value: "1",
   })
   .or()
   .where({
     column: "id",
-    operator: ">",
-    value: " hrushi",
+    operator: "<",
+    value: "2",
   })
   .log();
 
@@ -117,7 +117,11 @@ postInstance.deleteWhere({
   column: "id",
   operator: ">",
   value: " hrushi",
-});
+}).andWhere({
+  column: "id",
+  operator: "in",
+  value: "(3,1,2)",
+}).returning(['id', 'name']).log();
 
 // //executing query
 // postInstance.execute();

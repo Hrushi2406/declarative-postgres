@@ -1,13 +1,15 @@
-import { IDeleteService } from "./abstracts/delete_service_interface";
+import {
+  IDeleteService,
+  IDeleteServiceInput,
+} from "./abstracts/delete_service_interface";
 
 export class DeleteService implements IDeleteService {
   //In class query builder
   readonly query: string;
 
   //constructor for base delete query
-  constructor(table: string) {
-    this.query = `DELETE FROM  ${table} `;
-    
+  constructor({ table, column, operator, value }: IDeleteServiceInput) {
+    this.query = `DELETE FROM ${table} WHERE ${column} ${operator} ${value} `;
 
     //Returning the class object delete service
     return this;

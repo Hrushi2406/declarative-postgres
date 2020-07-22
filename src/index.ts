@@ -49,9 +49,14 @@ class DeclarativePostgres {
     return this.selectInstance;
   }
 
-  delete({ table }: IDeleteServiceInput) {
+  deleteWhere({ table, column, operator, value }: IDeleteServiceInput) {
     //creating a new instance of DeleteService
-    this.deleteInstance = new DeleteService(table);
+    this.deleteInstance = new DeleteService({
+      table: table,
+      column: column,
+      operator: operator,
+      value: value,
+    });
 
     //return the delete instance
     return this.deleteInstance;
@@ -95,7 +100,12 @@ postInstance.select({ table: "postgres", distinct: true }).log();
 // postInstance.execute();
 
 //Delete query from declarative postgres
-postInstance.delete({ table: "postgres"}).log();
+postInstance.deleteWhere({
+  table: "postgres",
+  column: "id",
+  operator: ">",
+  value: " hrushi",
+});
 
 // //executing query
 // postInstance.execute();

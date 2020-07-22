@@ -5,13 +5,26 @@ import {
 
 export class DeleteService implements IDeleteService {
   //In class query builder
-  readonly query: string;
+  private query: string;
 
   //constructor for base delete query
   constructor({ table, column, operator, value }: IDeleteServiceInput) {
     this.query = `DELETE FROM ${table} WHERE ${column} ${operator} ${value} `;
 
     //Returning the class object delete service
+    return this;
+  }
+
+  and() {
+    //Building query
+    this.query = this.query + `AND `;
+
+    return this;
+  }
+
+  or() {
+    this.query = this.query + `OR `;
+
     return this;
   }
 

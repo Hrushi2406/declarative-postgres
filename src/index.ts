@@ -69,17 +69,17 @@ class DeclarativePostgres {
   //Executing the final query
   async execute() {
     //Null checker for select instance
-    if (this.selectInstance) {
-      //assigning final query to select instance query
-      this.finalQuery = this.selectInstance.query;
-      this.selectInstance = null;
-    }
+    // if (this.selectInstance) {
+    //   //assigning final query to select instance query
+    //   this.finalQuery = this.selectInstance.query;
+    //   this.selectInstance = null;
+    // }
 
-    if (this.deleteInstance) {
-      //assigning final query to delete instance query
-      this.finalQuery = this.deleteInstance.query;
-      this.deleteInstance = null;
-    }
+    // if (this.deleteInstance) {
+    //   //assigning final query to delete instance query
+    //   this.finalQuery = this.deleteInstance.query;
+    //   this.deleteInstance = null;
+    // }
 
     //Executing the query
     const result = await this.db.query(this.finalQuery);
@@ -93,7 +93,20 @@ class DeclarativePostgres {
 const postInstance = new DeclarativePostgres();
 
 //Select query from declarative postgres
-postInstance.select({ table: "postgres", distinct: true }).log();
+postInstance
+  .select({ table: "postgres", distinct: true })
+  .where({
+    column: "id",
+    operator: ">",
+    value: " hrushi",
+  })
+  .or()
+  .where({
+    column: "id",
+    operator: ">",
+    value: " hrushi",
+  })
+  .log();
 
 // //executing query
 // postInstance.execute();

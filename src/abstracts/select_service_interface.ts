@@ -1,9 +1,11 @@
-export interface ISelectService {
-  //In class Query
-  readonly query: string;
+import { IWhereInputInterface } from "./reuseable_abstracts/where_interface";
 
+export interface ISelectService {
   //Where
-  //   where: () => void;
+  where: ({ column, operator, value }: IWhereInputInterface) => void;
+
+  //And
+  and: () => void;
 
   //In class executer
   execute: () => void;

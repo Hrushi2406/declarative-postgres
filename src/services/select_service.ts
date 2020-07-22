@@ -1,19 +1,40 @@
 import { ISelectService } from "../abstracts/select_service_interface";
+import { IWhereInputInterface } from "../abstracts/reuseable_abstracts/where_interface";
 
 export class SelectService implements ISelectService {
   //In class query builder
-  readonly query: string;
+  private query: string;
 
   //constructor for base select query
   constructor(table: string, distinct: boolean) {
     //check for distinct parameters
     if (distinct) {
-      this.query = `SELECT DISTINCT * FROM  ${table} `;
+      this.query = `SELECT DISTINCT * FROM ${table} `;
     } else {
-      this.query = `SELECT * FROM  ${table} `;
+      this.query = `SELECT * FROM ${table} `;
     }
 
     //Returning the class select service
+    return this;
+  }
+
+  where({ column, operator, value }: IWhereInputInterface) {
+    //Building query
+    this.query = this.query + `WHERE ${column} ${operator} ${value} `;
+
+    return this;
+  }
+
+  and() {
+    //Building query
+    this.query = this.query + `AND `;
+
+    return this;
+  }
+
+  or() {
+    this.query = this.query + `OR `;
+
     return this;
   }
 

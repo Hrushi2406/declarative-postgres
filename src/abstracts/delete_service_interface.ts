@@ -1,9 +1,9 @@
 export interface IDeleteService {
-  //In class Query
-  readonly query: string;
+  //or
+  or: () => void;
 
-  //Where
-  //   where: () => void;
+  //and
+  and: () => void;
 
   //In class executer
   execute: () => void;

@@ -1,7 +1,6 @@
 import {
   IDeleteService,
   IDeleteServiceInput,
-  ILogicalDeleteServiceInput,
 } from "../abstracts/delete_service_interface";
 
 export class DeleteService implements IDeleteService {
@@ -16,15 +15,15 @@ export class DeleteService implements IDeleteService {
     return this;
   }
 
-  andWhere({ column, operator, value } : ILogicalDeleteServiceInput) {
+  and() {
     //Building query
-    this.query = this.query + `AND ${column} ${operator} ${value} `;
+    this.query = this.query + `AND `;
 
     return this;
   }
 
-  orWhere({ column, operator, value } : ILogicalDeleteServiceInput) {
-    this.query = this.query + `OR ${column} ${operator} ${value} `;
+  or() {
+    this.query = this.query + `OR `;
 
     return this;
   }

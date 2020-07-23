@@ -1,9 +1,9 @@
 export interface IDeleteService {
   //or
-  orWhere: ({ column, operator, value } : ILogicalDeleteServiceInput) => void;
+  or: () => void;
 
   //and
-  andWhere: ({ column, operator, value } : ILogicalDeleteServiceInput) => void;
+  and: () => void;
 
   //returning deleted rows
   returning: (cols : string[]) => void;
@@ -23,9 +23,3 @@ export interface IDeleteServiceInput {
   value: string;
 }
 
-//orWhere / andWhere input interface
-export interface ILogicalDeleteServiceInput {
-  column: string;
-  operator: string;
-  value: string;
-}

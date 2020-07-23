@@ -20,6 +20,6 @@ export interface IDeleteServiceInput {
   table: string;
   column: string;
   operator: string;
-  value: string;
+  value: string | string[];
 }
 

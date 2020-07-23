@@ -1,8 +1,10 @@
 import { Pool, Client } from "pg";
 import { SelectService } from "./services/select_service";
 import { DeleteService } from "./services/delete_service";
+import { InsertService } from "./services/insert_service";
 import { ISelectServiceInput } from "./abstracts/select_service_interface";
 import { IDeleteServiceInput } from "./abstracts/delete_service_interface";
+import { IInsertServiceInput } from "./abstracts/insert_service_interface";
 
 //Type of Database Instance
 type dbInstance = Pool | Client;
@@ -13,6 +15,9 @@ class DeclarativePostgres {
 
   //final Query to be executed
   private finalQuery: string;
+
+  //insert instance
+  private insertInstance: InsertService | null = null;
 
   //select instance
   private selectInstance: SelectService | null = null;
@@ -59,6 +64,14 @@ class DeclarativePostgres {
 
     //return the delete instance
     return this.deleteInstance;
+  }
+
+  insert({ table, cols, values}: IInsertServiceInput) {
+    //creating a new instance of InsertService
+    this.insertInstance = new InsertService({table: table, cols: cols, values: values});
+
+    //return the select instance
+    return this.insertInstance;
   }
 
   //Declarative Postgres Logger
@@ -114,13 +127,12 @@ postInstance
 //Delete query from declarative postgres
 postInstance.deleteWhere({
   table: "postgres",
-  column: "id",
-  operator: ">",
-  value: " hrushi",
+  column: "name",
+  operator: "IN",
+  value: ["hrushi", "sumit"],
 }).returning(['id', 'name']).log();
 
 // //executing query
 // postInstance.execute();
 
-//declarative postgres logger
-postInstance.log();
+postInstance.insert({table: 'postgres',cols: ['name', 'id'], values: ['sumit', 90] }).returning().log();

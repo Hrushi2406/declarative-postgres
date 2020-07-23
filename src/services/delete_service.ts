@@ -9,7 +9,13 @@ export class DeleteService implements IDeleteService {
 
   //constructor for base delete query
   constructor({ table, column, operator, value }: IDeleteServiceInput) {
-    this.query = `DELETE FROM ${table} WHERE ${column} ${operator} ${value} `;
+    if(typeof value === "string"){
+      this.query = `DELETE FROM ${table} WHERE ${column} ${operator} ${value} `;
+    }else{
+      let valuestring: String = '(' + value.join(',') + ')';
+      this.query = `DELETE FROM ${table} WHERE ${column} ${operator} ${valuestring} `;
+    }
+    
 
     //Returning the class object delete service
     return this;
@@ -30,11 +36,11 @@ export class DeleteService implements IDeleteService {
 
   returning(cols : string[] = []){
     if(cols.length == 0){
-      this.query = this.query + `returning *`;
+      this.query = this.query + `RETURNING *`;
     }
     else{
       let colString = cols.join(',');
-      this.query = this.query + `returning `+ colString;
+      this.query = this.query + `RETURNING `+ colString;
     }
 
     return this;
